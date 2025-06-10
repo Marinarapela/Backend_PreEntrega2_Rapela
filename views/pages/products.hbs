@@ -1,0 +1,59 @@
+<h1>Productos</h1>
+
+<form method="GET" action="/home">
+    <label>Categoría:</label>
+    <input type="text" name="category" placeholder="plantas" />
+
+    <label>Disponibilidad:</label>
+    <select name="available">
+        <option value="">Todas</option>
+        <option value="true">Disponible</option>
+        <option value="false">No disponible</option>
+    </select>
+
+    <label>Orden por precio:</label>
+    <select name="sort">
+        <option value="">Sin orden</option>
+        <option value="asc">Ascendente</option>
+        <option value="desc">Descendente</option>
+    </select>
+
+    <label>Límite por página:</label>
+    <input type="number" name="limit" value="{{limit}}" min="1" />
+
+    <button type="submit">Filtrar</button>
+</form>
+
+<hr />
+
+<ul>
+    {{#each payload}}
+        <li>
+            {{#if thumbnail}}
+                <img src="{{thumbnail}}" alt="{{title}}" width="150" />
+            {{/if}}
+            <strong>{{title}}</strong> - ${{price}}  
+            - Categoría: {{category}}  
+            - Disponible: {{#if available}}✅ Sí{{else}}❌ No{{/if}}  
+            
+            <form action="/api/carts/{{../cartId}}/products/{{_id}}" method="POST" style="display:inline;">
+                <button type="submit">Agregar al carrito</button>
+            </form>
+        </li>
+    {{/each}}
+</ul>
+
+<hr />
+
+<div>
+    Página {{page}} de {{totalPages}}<br />
+
+    {{#if hasPrevPage}}
+        <a href="{{prevLink}}">⬅️ Anterior</a>
+    {{/if}}
+
+    {{#if hasNextPage}}
+        <a href="{{nextLink}}">Siguiente ➡️</a>
+    {{/if}}
+</div>
+
